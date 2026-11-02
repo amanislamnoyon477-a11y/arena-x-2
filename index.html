@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ArenaX – টুর্নামেন্ট ম্যানেজার</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090913;--c1:#141428;--c2:#1c1c38;--tx:#f2f2fb;--mu:#9a9ab8;--p:#8b5cf6;--b:#3b82f6;--g:linear-gradient(135deg,#8b5cf6,#3b82f6);--ok:#22c55e;--no:#ef4444;--wa:#f59e0b;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;margin:0}html,body{background:var(--bg);color:var(--tx);font-family:'Hind Siliguri',system-ui,sans-serif;font-size:15px}
+body{background:radial-gradient(circle at 20% -10%,#2a1a5e55,transparent 50%),radial-gradient(circle at 100% 10%,#16336e55,transparent 45%),var(--bg);min-height:100vh;padding-bottom:90px}
+#app{max-width:720px;margin:auto;padding:14px;animation:fi .3s}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+h1{font-size:22px}h2{font-size:17px;margin:18px 0 10px}h3{font-size:16px}small,.m{color:var(--mu);font-size:12.5px}
+.top{display:flex;justify-content:space-between;align-items:center}.logo{font-weight:700;font-size:22px;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{background:var(--c1);border:1px solid #ffffff12;border-radius:16px;overflow:hidden;margin-bottom:12px}.pad{padding:14px}
+.t{cursor:pointer;transition:transform .15s}.t:active{transform:scale(.98)}
+.cv{height:92px;position:relative;display:flex;align-items:center;justify-content:center}.em{font-size:42px;filter:drop-shadow(0 4px 8px #0006)}
+.bd{position:absolute;top:10px;left:10px;font-size:11px;padding:3px 9px;border-radius:99px;font-weight:700;background:#0008}
+.bd.live{background:var(--no);animation:pl 1.4s infinite}.bd.upcoming{background:#2563eb}.bd.finished{background:#444}
+@keyframes pl{50%{opacity:.6}}
+.bd2{padding:12px 14px}.kv{display:flex;gap:8px;margin-top:10px}.kv>div{flex:1;background:var(--c2);border-radius:10px;padding:7px 9px}.kv small{display:block}.kv b{font-size:14px}
+.hs{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}.hs .card{min-width:280px;scroll-snap-align:start}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:10px 0}.chip{padding:7px 14px;border-radius:99px;background:var(--c1);color:var(--mu);border:1px solid #ffffff14;white-space:nowrap;font:inherit;cursor:pointer}.chip.on{background:var(--g);color:#fff;border:0}
+.btn{width:100%;padding:12px;border:0;border-radius:12px;background:var(--g);color:#fff;font:700 15px inherit;font-family:inherit;cursor:pointer;margin-top:10px}.btn.s{width:auto;padding:7px 14px;font-size:13px;margin:0}.btn.o{background:var(--c2)}.btn.r{background:var(--no)}.btn.k{background:var(--ok)}.btn:disabled{opacity:.5}
+input,select,textarea{width:100%;padding:11px 12px;margin:4px 0 10px;border-radius:10px;border:1px solid #ffffff1f;background:var(--c2);color:var(--tx);font:inherit}label{font-size:13px;color:var(--mu)}
+nav{position:fixed;bottom:0;left:0;right:0;background:#0d0d1bf2;backdrop-filter:blur(12px);display:flex;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid #ffffff14;z-index:5}
+nav button{background:0;border:0;color:var(--mu);font:inherit;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;flex:1}nav button i{font-style:normal;font-size:20px}nav button.on{color:#fff}nav button.on i{filter:drop-shadow(0 0 6px var(--p))}
+.dot{position:absolute;top:-2px;right:22%;background:var(--no);color:#fff;border-radius:9px;font-size:10px;padding:0 5px}
+.mo{position:fixed;inset:0;background:#000b;z-index:9;display:flex;align-items:flex-end;justify-content:center}.mo>div{background:var(--c1);width:100%;max-width:720px;max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px;animation:fi .25s}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #ffffff0d}.row:last-child{border:0}
+.tag{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--c2)}.tag.ok{background:#22c55e30;color:var(--ok)}.tag.no{background:#ef444430;color:var(--no)}.tag.wa{background:#f59e0b30;color:var(--wa)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}.pm{background:var(--c2);border:2px solid transparent;border-radius:12px;padding:10px 4px;color:var(--tx);font:inherit;font-weight:700;cursor:pointer}.pm.on{border-color:var(--p)}.pm small{display:block;font-weight:400}
+.av{width:72px;height:72px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;margin:auto}
+.st{display:grid;grid-template-columns:1fr 1fr;gap:10px}.st .card{padding:14px;margin:0}.st b{font-size:22px;display:block}
+#toast{position:fixed;top:14px;left:50%;transform:translate(-50%,-80px);background:var(--c2);border:1px solid var(--p);padding:10px 18px;border-radius:12px;z-index:20;transition:.3s}#toast.on{transform:translate(-50%,0)}
+.room{background:linear-gradient(135deg,#22c55e22,#3b82f622);border:1px solid #22c55e55;border-radius:12px;padding:12px;margin:10px 0}
+#sup{position:fixed;right:14px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:6;background:#25d366;color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;text-decoration:none;box-shadow:0 6px 18px #0008}
+pre{white-space:pre-wrap;font-family:inherit;color:#d6d6ee}
+</style><script>
+/* Firebase bridge: the app talks to window.claude (db/user); the module at the bottom fills it in after sign-in */
+(function(){var r;window.__fb=new Promise(function(x){r=x});window.__fbRes=r;window.claude={use:function(n){return window.__fb.then(function(f){return f(n)})}}})();
+</script>
+</head><body>
+<div id="toast"></div><a id="sup" href="https://wa.me/8801756518197" target="_blank" rel="noopener" title="WhatsApp সাপোর্ট">💬</a><div id="app"></div><div id="mo"></div>
+<nav id="nav"></nav>
+<script>
+const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=s=>document.querySelector(s),taka=n=>'৳'+Number(n||0).toLocaleString('bn-BD');
+const G=['linear-gradient(135deg,#7c3aed,#2563eb)','linear-gradient(135deg,#c026d3,#6d28d9)','linear-gradient(135deg,#0ea5e9,#7c3aed)','linear-gradient(135deg,#4f46e5,#06b6d4)'];
+const MI={solo:'🎯',duo:'🤝',squad:'🛡️'},MN={solo:'Solo',duo:'Duo',squad:'Squad'},ST={live:'চলমান',upcoming:'আসন্ন',finished:'শেষ'},PM={bkash:'bKash',nagad:'Nagad',rocket:'Rocket'};
+let db,user,uid,adm=false,tab='home',sel=null,flt='all',at='ov',pk='',seenN=-1;
+const S={tours:[],regs:[],appr:[],notes:[],pays:[],cfg:{},prof:null,dep:[],dapp:[],acct:null,al:true,unl:false,ready:false,pl:false};
+const fmt=t=>t?new Date(t).toLocaleString('bn-BD',{dateStyle:'medium',timeStyle:'short'}):'—';
+const nums=k=>((S.cfg[k]||{}).nums||[]),on=k=>!!(S.cfg[k]&&S.cfg[k].on&&nums(k).length),T=id=>S.tours.find(t=>t.id===id),toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2400)};
+const items=u=>(S.regs.find(r=>r.id===u)||{}).items||{},ap=(u,t)=>((S.appr.find(a=>a.id===u)||{}).items||{})[t];
+const myReg=t=>items(uid)[t],stat=t=>myReg(t)?(ap(uid,t)||'pending'):null,cnt=t=>S.appr.filter(a=>(a.items||{})[t]==='approved').length;
+const mine=n=>(!n.uid&&!n.aud)||n.uid===uid||(n.aud==='players'&&ap(uid,n.tid)==='approved');
+const rows=s=>s.docs.map(d=>({id:d.id,...d.data()}));
+const sub=(p,k)=>db.collection(p).onSnapshot(s=>{S[k]=rows(s);if(k==='notes')newN();draw()},()=>{S.err=1;draw()});
+function newN(){const n=S.notes.filter(mine).length;if(seenN>=0&&n>seenN)toast('🔔 নতুন নোটিফিকেশন');seenN=n}
+const unread=()=>{let l=0;try{l=+localStorage.getItem('ax_seen')||0}catch(e){}return S.notes.filter(n=>mine(n)&&n.ts>l).length};
+async function init(){
+ draw();
+ try{user=await claude.use('user');db=await claude.use('db')}catch(e){}
+ if(!db||!user){S.ready=S.al=true;return draw()}
+ uid=await user.id();adm=user.canEdit();
+ ['tournaments:tours','regs:regs','approvals:appr','notices:notes','payouts:pays','deposits:dep','depApprovals:dapp'].forEach(x=>{const[a,b]=x.split(':');sub(a,b)});
+ db.doc('settings/pay').onSnapshot(s=>{S.cfg=s.exists?s.data():{};draw()});
+ db.doc('data/users/'+uid+'/profile').onSnapshot(s=>{S.prof=s.exists?s.data():null;S.ready=true;draw()},()=>{S.ready=true;draw()});
+ setTimeout(()=>{if(!S.ready){S.slow=1;draw()}},10000);
+}
+function draw(){
+ const a=$('#app');
+ if(!S.ready||!S.al){a.innerHTML=`<div class="pad" style="text-align:center;margin-top:30vh"><div class="logo">ArenaX</div><p class="m">${S.slow?'ডেটা লোড হচ্ছে না, নেটওয়ার্ক চেক করুন…':'লোড হচ্ছে…'}</p></div>`;$('#nav').innerHTML='';return}
+ if(!db||!user){a.innerHTML=`<div class="pad" style="margin-top:20vh"><div class="logo">ArenaX</div><h2>সাইন ইন প্রয়োজন</h2><p class="m">claude.ai অ্যাকাউন্টে সাইন ইন করে লিংকটি খুলুন।</p></div>`;return}
+ if(!S.prof){a.innerHTML=`<div style="margin-top:10vh;text-align:center"><div class="logo">ArenaX</div><h2>প্রোফাইল তৈরি করুন</h2><p class="m">টুর্নামেন্টে অংশ নিতে আপনার গেমিং পরিচয় দিন</p></div><div class="card pad" style="margin-top:16px"><label>গেমার নাম</label><input id="pn"><label>Player ID (গেম ইউআইডি)</label><input id="pi"><button class="btn" onclick="saveProf()">শুরু করুন</button></div>`;$('#nav').innerHTML='';return}
+ const V={home,list,ranks,alerts,profile,admin}[sel?'detail':tab]||home;
+ a.innerHTML=sel?detail():V();
+ const nv=[['home','🏠','হোম'],['list','🎮','টুর্নামেন্ট'],['ranks','🏆','র‍্যাঙ্ক'],['alerts','🔔','নোটিশ'],['profile','👤','প্রোফাইল']];
+ if(adm)nv.push(['admin','⚙️','অ্যাডমিন']);
+ const u=unread();
+ $('#nav').innerHTML=nv.map(([k,i,l])=>`<button class="${tab===k&&!sel?'on':''}" onclick="go('${k}')"><i>${i}</i>${l}${k==='alerts'&&u?`<span class="dot">${u}</span>`:''}</button>`).join('');
+}
+function go(k){tab=k;sel=null;if(k==='alerts'){try{localStorage.setItem('ax_seen',Date.now())}catch(e){}}draw();scrollTo(0,0)}
+async function saveProf(){const n=$('#pn').value.trim(),i=$('#pi').value.trim();if(!n||!i)return toast('সব তথ্য দিন');try{await db.doc('data/users/'+uid+'/profile').set({name:n,playerId:i});toast('স্বাগতম!')}catch(e){toast('সেভ হয়নি')}}
+function card(t){const i=S.tours.indexOf(t);return `<div class="card t" onclick="sel='${t.id}';draw();scrollTo(0,0)"><div class="cv" style="background:${G[i%4]}"><span class="bd ${t.status}">${ST[t.status]||''}</span><span class="em">${MI[t.mode]||'🎮'}</span></div><div class="bd2"><h3>${E(t.title)}</h3><p class="m">${E(t.game||'')} · ${MN[t.mode]} · ${fmt(t.start)}</p><div class="kv"><div><small>এন্ট্রি</small><b>${t.fee>0?taka(t.fee):'ফ্রি'}</b></div><div><small>প্রাইজ পুল</small><b>${taka(t.prize)}</b></div><div><small>প্লেয়ার</small><b>${cnt(t.id)}/${t.max||'∞'}</b></div></div></div></div>`}
+const by=s=>S.tours.filter(t=>t.status===s);
+const empty=m=>`<div class="card pad m" style="text-align:center">${m}</div>`;
+function home(){
+ const f=S.tours.filter(t=>t.featured&&t.status!=='finished');
+ const sec=(h,l)=>l.length?`<h2>${h}</h2>`+l.map(card).join(''):'';
+ return `<div class="top"><div><small>স্বাগতম</small><h1>${E(S.prof.name)}</h1></div><div style="text-align:right"><div class="logo">ArenaX</div><small onclick="addM()" style="cursor:pointer">💼 ${taka(bal(uid))} · ＋ Add</small></div></div>
+ ${S.err?'<p class="m">⚠️ ডেটা এখন পাওয়া যাচ্ছে না</p>':''}
+ ${f.length?`<h2>⭐ ফিচার্ড</h2><div class="hs">${f.map(card).join('')}</div>`:''}
+ ${sec('🔴 চলমান',by('live'))}${sec('⏳ আসন্ন',by('upcoming'))}${sec('✅ শেষ হয়েছে',by('finished'))}
+ ${S.tours.length?'':empty(adm?'কোনো টুর্নামেন্ট নেই। অ্যাডমিন ট্যাব থেকে প্রথম টুর্নামেন্ট তৈরি করুন।':'এখনো কোনো টুর্নামেন্ট নেই।')}`;
+}
+function list(){
+ const l=S.tours.filter(t=>flt==='all'||t.status===flt||t.mode===flt);
+ return `<h1>টুর্নামেন্ট</h1><div class="chips">${[['all','সব'],['live','চলমান'],['upcoming','আসন্ন'],['finished','শেষ'],['solo','Solo'],['duo','Duo'],['squad','Squad']].map(([k,n])=>`<button class="chip ${flt===k?'on':''}" onclick="flt='${k}';draw()">${n}</button>`).join('')}</div>${l.map(card).join('')||empty('কিছু পাওয়া যায়নি')}`;
+}
+function detail(){
+ const t=T(sel);if(!t){sel=null;return home()}
+ const s=stat(t.id),full=t.max&&cnt(t.id)>=t.max,i=S.tours.indexOf(t);
+ const lab={pending:'<span class="tag wa">অনুমোদনের অপেক্ষায়</span>',approved:'<span class="tag ok">নিশ্চিত</span>',rejected:'<span class="tag no">বাতিল</span>'};
+ let btn=t.status==='finished'?'':s?`<p style="margin-top:10px">আপনার রেজিস্ট্রেশন: ${lab[s]}</p>`:full?'<button class="btn" disabled>স্লট পূর্ণ</button>':`<button class="btn" onclick="joinM('${t.id}')">জয়েন করুন ${t.fee>0?'· '+taka(t.fee):'· ফ্রি'}</button>`;
+ const room=s==='approved'&&t.roomOn?`<div class="room"><b>🔑 রুম তথ্য</b><p>Room ID: <b>${E(t.roomId)}</b></p><p>Password: <b>${E(t.roomPass)}</b></p></div>`:'';
+ const win=(t.winners||[]).length?`<h2>🏆 বিজয়ী</h2><div class="card pad">${t.winners.map(w=>`<div class="row"><span>#${w.rank} ${E(w.name)}</span><b>${taka(w.prize)}</b></div>`).join('')}</div>`:'';
+ return `<button class="chip" onclick="sel=null;draw()">← ফিরে যান</button>
+ <div class="card" style="margin-top:10px"><div class="cv" style="background:${G[i%4]};height:130px"><span class="bd ${t.status}">${ST[t.status]}</span><span class="em" style="font-size:60px">${MI[t.mode]}</span></div><div class="pad"><h1>${E(t.title)}</h1><p class="m">${E(t.game||'')} · ${MN[t.mode]}</p>
+ <div class="kv"><div><small>এন্ট্রি</small><b>${t.fee>0?taka(t.fee):'ফ্রি'}</b></div><div><small>প্রাইজ</small><b>${taka(t.prize)}</b></div><div><small>প্লেয়ার</small><b>${cnt(t.id)}/${t.max||'∞'}</b></div></div>
+ <p style="margin-top:10px">🕒 ${fmt(t.start)}</p>${btn}</div></div>${det(t)}${room}${win}
+ ${t.prizeDetails?`<h2>💰 প্রাইজ বিবরণ</h2><div class="card pad"><pre>${E(t.prizeDetails)}</pre></div>`:''}
+ ${t.rules?`<h2>📜 নিয়মাবলি</h2><div class="card pad"><pre>${E(t.rules)}</pre></div>`:''}`;
+}
+function modal(h){$('#mo').innerHTML=`<div class="mo" onclick="if(event.target===this)closeM()"><div>${h}</div></div>`}
+const closeM=()=>$('#mo').innerHTML='';
+function joinM(id){
+ const t=T(id);pk='';
+ let h=`<h3>${E(t.title)}</h3><p class="m">${MN[t.mode]} মোড</p>`;
+ if(t.mode!=='solo')h+=`<label>টিমের নাম</label><input id="jt"><label>টিম মেম্বারদের Player ID (কমা দিয়ে)</label><input id="jm">`;
+ if(t.fee>0)h+=`<p style="margin-top:8px">এন্ট্রি ফি <b>${taka(t.fee)}</b>। নিচের নম্বরে Send Money করে TrxID দিন।</p>${bal(uid)>=t.fee?`<button class="pm" id="pm_wallet" style="width:100%;margin-top:8px" onclick="pickW()">💼 ওয়ালেট ব্যালেন্স ব্যবহার করুন (${taka(bal(uid))})</button>`:''}<div class="seg">${Object.keys(PM).filter(on).map(k=>`<button class="pm" id="pm_${k}" onclick="pick('${k}')">${PM[k]}<small hidden>${E(nums(k)[0]||'নম্বর নেই')}</small></button>`).join('')}</div><div id="pnb" class="room" style="display:none"></div><label>আপনার প্রেরক নম্বর</label><input id="js" inputmode="tel"><label>Transaction ID</label><input id="jx">`;
+ modal(h+`<button class="btn" onclick="submitJoin('${id}')">রেজিস্ট্রেশন জমা দিন</button>`);
+}
+function pick(k){pk=k;document.querySelectorAll('.pm').forEach(b=>b.classList.toggle('on',b.id==='pm_'+k));const b=$('#pnb');b.style.display='block';b.innerHTML='<b>'+E(PM[k])+' নম্বর (Send Money করুন)</b>'+nums(k).map(n=>`<p style="font-size:17px;margin-top:6px">${E(n)} <button class="btn s o" onclick="navigator.clipboard&&navigator.clipboard.writeText('${E(n)}');toast('কপি হয়েছে')">কপি</button></p>`).join('')}
+async function submitJoin(id){
+ const t=T(id),v=x=>($(x)?$(x).value.trim():'');
+ if(t.max&&cnt(id)>=t.max)return toast('স্লট পূর্ণ');
+ const r={ts:Date.now(),name:S.prof.name,playerId:S.prof.playerId,fee:+t.fee||0};
+ if(t.mode!=='solo'){r.team=v('#jt');r.members=v('#jm');if(!r.team)return toast('টিমের নাম দিন')}
+ if(t.fee>0){r.method=pk;r.sender=v('#js');r.trx=v('#jx');if(pk==='wallet'){if(bal(uid)<t.fee)return toast('ব্যালেন্স কম, Add Money করুন')}else if(!pk||!r.sender||!r.trx)return toast('পেমেন্ট তথ্য পূরণ করুন')}
+ try{await db.doc('regs/'+uid).set({items:{...items(uid),[id]:r}});closeM();toast('রেজিস্ট্রেশন জমা হয়েছে ✅')}catch(e){toast('জমা হয়নি, আবার চেষ্টা করুন')}
+}
+function ranks(){
+ const m={};S.pays.forEach(p=>{const o=m[p.uid]||(m[p.uid]={name:p.name,w:0,sum:0});o.w+=p.rank===1?1:0;o.sum+=+p.amount||0});
+ const l=Object.values(m).sort((a,b)=>b.sum-a.sum||b.w-a.w);
+ return `<h1>🏆 লিডারবোর্ড</h1><div class="card pad" style="margin-top:12px">${l.map((x,i)=>`<div class="row"><span>${['🥇','🥈','🥉'][i]||'#'+(i+1)} ${E(x.name)}</span><span><b>${taka(x.sum)}</b> <small>${x.w} জয়</small></span></div>`).join('')||'<p class="m">ফলাফল প্রকাশিত হলে এখানে দেখা যাবে</p>'}</div>`;
+}
+function alerts(){
+ const l=S.notes.filter(mine).sort((a,b)=>b.ts-a.ts);
+ return `<h1>🔔 নোটিফিকেশন</h1><div style="margin-top:12px">${l.map(n=>`<div class="card pad"><b>${E(n.title)}</b><p>${E(n.body||'')}</p><small>${fmt(n.ts)}</small></div>`).join('')||empty('কোনো নোটিফিকেশন নেই')}</div>`;
+}
+function profile(){
+ const it=Object.entries(items(uid)),mp=S.pays.filter(p=>p.uid===uid);
+ const hist=it.map(([id,r])=>({t:T(id),r,s:ap(uid,id)||'pending'})).filter(x=>x.t);
+ const win=mp.reduce((a,p)=>a+(+p.amount||0),0);
+ const cls={pending:'wa',approved:'ok',rejected:'no'},lb={pending:'যাচাই চলছে',approved:'নিশ্চিত',rejected:'বাতিল'};
+ return `<div class="card pad" style="text-align:center"><div class="av">${E(S.prof.name[0]||'?').toUpperCase()}</div><h1 style="margin-top:8px">${E(S.prof.name)}</h1><p class="m">Player ID: ${E(S.prof.playerId)}</p><p class="m">${E(window.AX_EMAIL||'')}</p><button class="btn s o" style="margin-top:10px" onclick="editProf()">প্রোফাইল এডিট</button> <button class="btn s o" style="margin-top:10px" onclick="logout()">লগআউট</button></div>
+ <div class="card pad" style="margin-top:12px;background:var(--g)"><small style="color:#fffc">ওয়ালেট ব্যালেন্স</small><h1>${taka(bal(uid))}</h1><button class="btn s o" onclick="addM()" style="margin-top:6px">＋ Add Money</button></div><div class="card pad" style="margin-top:12px"><b>🎧 ২৪ ঘণ্টা কাস্টমার সার্ভিস</b><p class="m">যেকোনো সমস্যায় WhatsApp বা কল করুন</p><p style="font-size:17px;margin:6px 0">01756518197</p><div style="display:flex;gap:8px"><a class="btn s k" style="text-decoration:none" href="https://wa.me/8801756518197" target="_blank" rel="noopener">WhatsApp</a><a class="btn s o" style="text-decoration:none" href="tel:+8801756518197">কল করুন</a></div></div><div class="st" style="margin-top:12px"><div class="card"><small>ম্যাচ</small><b>${hist.filter(x=>x.s==='approved').length}</b></div><div class="card"><small>মোট প্রাইজ</small><b>${taka(win)}</b></div></div>
+ <h2>ম্যাচ হিস্টরি</h2><div class="card pad">${hist.map(x=>{const w=(x.t.winners||[]).find(w=>w.uid===uid);return `<div class="row" onclick="sel='${x.t.id}';draw()"><span>${E(x.t.title)}<br><small>${ST[x.t.status]}${w?' · #'+w.rank+' স্থান':''}</small></span><span class="tag ${cls[x.s]}">${lb[x.s]}</span></div>`}).join('')||'<p class="m">এখনো কোনো ম্যাচ নেই</p>'}</div>
+ <h2>ট্রানজেকশন হিস্টরি</h2><div class="card pad">${[...hist.filter(x=>x.r.fee>0).map(x=>({d:x.r.ts,n:'এন্ট্রি ফি – '+x.t.title,a:'-'+taka(x.r.fee),s:`<span class="tag ${cls[x.s]}">${PM[x.r.method]||(x.r.method==='wallet'?'Wallet':'')} · ${lb[x.s]}</span>`})),...myDeps().map(d=>({d:d.ts,n:'Add Money – '+(PM[d.method]||''),a:'+'+taka(d.amount),s:`<span class="tag ${cls[d.s]}">${lb[d.s]}</span>`})),...mp.map(p=>({d:p.ts,n:'প্রাইজ – '+(T(p.tid)||{}).title,a:'+'+taka(p.amount),s:`<span class="tag ${p.paid?'ok':'wa'}">${p.paid?'পরিশোধিত':'প্রক্রিয়াধীন'}</span>`}))].sort((a,b)=>b.d-a.d).map(x=>`<div class="row"><span>${E(x.n)}<br><small>${fmt(x.d)}</small></span><span style="text-align:right"><b>${x.a}</b><br>${x.s}</span></div>`).join('')||'<p class="m">কোনো লেনদেন নেই</p>'}</div>`;
+}
+function editProf(){modal(`<h3>প্রোফাইল এডিট</h3><label>নাম</label><input id="pn" value="${E(S.prof.name)}"><label>Player ID</label><input id="pi" value="${E(S.prof.playerId)}"><button class="btn" onclick="saveProf().then(closeM)">সেভ</button>`)}
+/* ---------- ADMIN ---------- */
+function admin(){
+ const tabs=[['ov','ড্যাশবোর্ড'],['tours','টুর্নামেন্ট'],['pl','রেজিস্ট্রেশন'],['mt','ম্যাচ'],['dp','Add Money'],['pz','প্রাইজ'],['nt','নোটিশ'],['us','ইউজার/সেটিং']];
+ let pend=0;S.regs.forEach(r=>Object.keys(r.items||{}).forEach(t=>{if(!ap(r.id,t))pend++}));
+ const nav=`<h1>⚙️ অ্যাডমিন</h1><div class="chips">${tabs.map(([k,n])=>`<button class="chip ${at===k?'on':''}" onclick="at='${k}';draw()">${n}</button>`).join('')}</div>`;
+ const V={
+ ov:()=>`<div class="st"><div class="card"><small>টুর্নামেন্ট</small><b>${S.tours.length}</b></div><div class="card"><small>ইউজার</small><b>${S.regs.length}</b></div><div class="card"><small>পেন্ডিং পেমেন্ট/রেজি.</small><b>${pend}</b></div><div class="card"><small>প্রাইজ বাকি</small><b>${taka(S.pays.filter(p=>!p.paid).reduce((a,p)=>a+(+p.amount||0),0))}</b></div></div>`,
+ tours:()=>`<button class="btn" onclick="tourM()">＋ নতুন টুর্নামেন্ট</button><div style="margin-top:12px">${S.tours.map(t=>`<div class="card pad"><b>${E(t.title)}</b> <span class="tag">${ST[t.status]}</span><div style="display:flex;gap:8px;margin-top:8px"><button class="btn s" onclick="tourM('${t.id}')">এডিট</button><button class="btn s r" onclick="delT('${t.id}')">ডিলিট</button></div></div>`).join('')}</div>`,
+ pl:()=>{let h='';S.regs.forEach(r=>Object.entries(r.items||{}).forEach(([tid,x])=>{const t=T(tid);if(!t)return;const s=ap(r.id,tid)||'pending';h+=`<div class="card pad"><b>${E(x.name)}</b> <small>ID ${E(x.playerId)}</small><p class="m">${E(t.title)}${x.team?' · টিম '+E(x.team):''}</p>${x.fee>0?`<p>${PM[x.method]||(x.method==='wallet'?'Wallet (ব্যালেন্স '+taka(bal(r.id))+')':'')} ${E(x.sender)} · TrxID <b>${E(x.trx)}</b> · ${taka(x.fee)}</p>`:''}<div style="display:flex;gap:8px;align-items:center;margin-top:8px"><span class="tag ${s==='approved'?'ok':s==='rejected'?'no':'wa'}">${s}</span><button class="btn s k" onclick="decide('${r.id}','${tid}','approved')">অনুমোদন</button><button class="btn s r" onclick="decide('${r.id}','${tid}','rejected')">বাতিল</button></div></div>`}));return h||empty('কোনো রেজিস্ট্রেশন নেই')},
+ mt:()=>S.tours.map(t=>{const P=players(t.id);return `<div class="card pad"><b>${E(t.title)}</b>
+ <label>স্ট্যাটাস</label><select onchange="setSt('${t.id}',this.value)">${Object.keys(ST).map(k=>`<option value="${k}" ${t.status===k?'selected':''}>${ST[k]}</option>`).join('')}</select>
+ <label>Room ID</label><input id="ri_${t.id}" value="${E(t.roomId||'')}"><label>Password</label><input id="rp_${t.id}" value="${E(t.roomPass||'')}">
+ <button class="btn s" onclick="pubRoom('${t.id}')">রুম প্রকাশ ${t.roomOn?'(প্রকাশিত)':''}</button>
+ <label style="display:block;margin-top:12px">বিজয়ী ঘোষণা (১ম–৩য়)</label>${[1,2,3].map(k=>`<div style="display:flex;gap:6px"><select id="w${k}_${t.id}"><option value="">#${k}</option>${P.map(p=>`<option value="${p.u}">${E(p.name)}</option>`).join('')}</select><input id="a${k}_${t.id}" type="number" placeholder="৳" style="max-width:90px"></div>`).join('')}
+ <button class="btn s k" onclick="declare('${t.id}')">ঘোষণা করুন</button></div>`}).join('')||empty('টুর্নামেন্ট নেই'),
+ dp:()=>{let h='';S.dep.forEach(r=>Object.entries(r.items||{}).forEach(([id,x])=>{const s=((S.dapp.find(a=>a.id===r.id)||{}).items||{})[id]||'pending';h+=`<div class="card pad"><b>${E(x.name)}</b> <small>${taka(x.amount)}</small><p>${PM[x.method]||''} ${E(x.sender)} · TrxID <b>${E(x.trx)}</b></p><div style="display:flex;gap:8px;align-items:center;margin-top:8px"><span class="tag ${s==='approved'?'ok':s==='rejected'?'no':'wa'}">${s}</span><button class="btn s k" onclick="decDep('${r.id}','${id}','approved')">অনুমোদন</button><button class="btn s r" onclick="decDep('${r.id}','${id}','rejected')">বাতিল</button></div></div>`}));return h||empty('কোনো Add Money রিকোয়েস্ট নেই')},
+ pz:()=>S.pays.map(p=>`<div class="row"><span>${E(p.name)} · #${p.rank}<br><small>${E((T(p.tid)||{}).title)}</small></span><span><b>${taka(p.amount)}</b> ${p.paid?'<span class="tag ok">Paid</span>':`<button class="btn s k" onclick="paid('${p.id}')">Paid</button>`}</span></div>`).join('')||empty('কোনো প্রাইজ নেই'),
+ nt:()=>`<div class="card pad"><label>শিরোনাম</label><input id="nt_t"><label>বার্তা</label><textarea id="nt_b" rows="3"></textarea><button class="btn" onclick="sendN()">সবাইকে পাঠান</button></div>`,
+ us:()=>`<div class="card pad"><h3>পেমেন্ট নম্বর (মার্চেন্ট)</h3>${Object.keys(PM).map(k=>`<label>${PM[k]} <input type="checkbox" id="co_${k}" ${(S.cfg[k]||{}).on?'checked':''} style="width:auto"> চালু</label><textarea id="cf_${k}" rows="4" placeholder="প্রতি লাইনে একটি নম্বর">${E(nums(k).join('\n'))}</textarea>`).join('')}<button class="btn s" onclick="saveCfg()">সেভ</button></div><h2>ইউজার তালিকা</h2><div class="card pad">${S.regs.map(r=>{const f=Object.values(r.items||{})[0]||{};return `<div class="row"><span>${E(f.name)}<br><small>ID ${E(f.playerId)}</small></span><small>${Object.keys(r.items||{}).length}টি এন্ট্রি</small></div>`}).join('')||'<p class="m">কেউ নেই</p>'}</div>`
+ }[at];
+ return nav+V();
+}
+const players=tid=>S.regs.filter(r=>(r.items||{})[tid]&&ap(r.id,tid)==='approved').map(r=>({u:r.id,name:r.items[tid].name}));
+const note=(o)=>db.collection('notices').add({ts:Date.now(),...o});
+async function tryW(f,m){try{await f();if(m)toast(m)}catch(e){toast('ব্যর্থ হয়েছে')}}
+function tourM(id){
+ const t=id?T(id):{mode:'solo',status:'upcoming',fee:0,prize:0,max:50};
+ modal(`<h3>${id?'এডিট':'নতুন'} টুর্নামেন্ট</h3><label>নাম</label><input id="f_title" value="${E(t.title||'')}"><label>গেম</label><input id="f_game" value="${E(t.game||'')}">
+ <label>মোড</label><select id="f_mode">${Object.keys(MN).map(k=>`<option value="${k}" ${t.mode===k?'selected':''}>${MN[k]}</option>`).join('')}</select>
+ <label>এন্ট্রি ফি (৳)</label><input id="f_fee" type="number" value="${t.fee}"><label>প্রাইজ পুল (৳)</label><input id="f_prize" type="number" value="${t.prize}"><label>সর্বোচ্চ প্লেয়ার</label><input id="f_max" type="number" value="${t.max}">
+ <label>শুরুর সময়</label><input id="f_start" type="datetime-local" value="${t.start?new Date(t.start-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,16):''}">
+ <label>প্রাইজ বিবরণ</label><textarea id="f_pd" rows="3">${E(t.prizeDetails||'')}</textarea><label>নিয়মাবলি</label><textarea id="f_rules" rows="4">${E(t.rules||'')}</textarea>
+ <label>স্ট্যাটাস</label><select id="f_st">${Object.keys(ST).map(k=>`<option value="${k}" ${t.status===k?'selected':''}>${ST[k]}</option>`).join('')}</select>
+ <label><input type="checkbox" id="f_feat" ${t.featured?'checked':''} style="width:auto"> ফিচার্ড</label>
+ <button class="btn" onclick="saveT('${id||''}')">সেভ</button>`);
+}
+async function saveT(id){
+ const v=k=>$('#f_'+k).value.trim(),old=id?T(id):{},{id:_,...rest}=old;
+ if(!v('title'))return toast('নাম দিন');
+ const d={...rest,title:v('title'),game:v('game'),mode:v('mode'),fee:+v('fee')||0,prize:+v('prize')||0,max:+v('max')||0,start:v('start')?new Date(v('start')).getTime():null,prizeDetails:v('pd'),rules:v('rules'),featured:$('#f_feat').checked,status:v('st')||old.status||'upcoming'};
+ await tryW(async()=>{await db.collection('tournaments').doc(id||undefined).set(d);if(!id)await note({title:'নতুন টুর্নামেন্ট: '+d.title,body:`প্রাইজ পুল ${taka(d.prize)} – এখনই জয়েন করুন!`});closeM()},'সেভ হয়েছে');
+}
+const delT=id=>confirm('ডিলিট করবেন?')&&tryW(()=>db.doc('tournaments/'+id).delete(),'ডিলিট হয়েছে');
+async function decide(u,tid,v){
+ const cur=(S.appr.find(a=>a.id===u)||{}).items||{};
+ await tryW(async()=>{await db.doc('approvals/'+u).set({items:{...cur,[tid]:v}});await note({uid:u,title:v==='approved'?'পেমেন্ট নিশ্চিত ✅':'রেজিস্ট্রেশন বাতিল',body:(T(tid)||{}).title||''})},'আপডেট হয়েছে');
+}
+const setSt=(id,s)=>tryW(async()=>{await db.doc('tournaments/'+id).update({status:s});if(s==='live')await note({aud:'players',tid:id,title:'ম্যাচ শুরু হয়েছে 🔴',body:T(id).title})},'স্ট্যাটাস আপডেট');
+const pubRoom=id=>tryW(async()=>{await db.doc('tournaments/'+id).update({roomId:$('#ri_'+id).value.trim(),roomPass:$('#rp_'+id).value.trim(),roomOn:true});await note({aud:'players',tid:id,title:'Room ID ও Password প্রকাশিত 🔑',body:T(id).title+' – টুর্নামেন্ট পেজে দেখুন'})},'রুম প্রকাশিত');
+async function declare(id){
+ const P=players(id),w=[];
+ for(const k of [1,2,3]){const u=$(`#w${k}_${id}`).value;if(!u)continue;const p=P.find(x=>x.u===u);w.push({rank:k,uid:u,name:p.name,prize:+$(`#a${k}_${id}`).value||0})}
+ if(!w.length)return toast('বিজয়ী বেছে নিন');
+ await tryW(async()=>{await db.doc('tournaments/'+id).update({winners:w,status:'finished'});for(const x of w){await db.doc('payouts/'+id+'_'+x.rank).set({tid:id,uid:x.uid,name:x.name,rank:x.rank,amount:x.prize,paid:false,ts:Date.now()});await note({uid:x.uid,title:'অভিনন্দন! 🏆',body:`${T(id).title}-এ আপনি #${x.rank} স্থান অর্জন করেছেন (${taka(x.prize)})`})}await note({title:'ফলাফল প্রকাশিত',body:T(id).title+' – লিডারবোর্ড দেখুন'})},'বিজয়ী ঘোষিত');
+}
+const paid=id=>tryW(()=>db.doc('payouts/'+id).update({paid:true}),'পরিশোধিত চিহ্নিত');
+const sendN=()=>{const t=$('#nt_t').value.trim();if(!t)return toast('শিরোনাম দিন');tryW(async()=>{await note({title:t,body:$('#nt_b').value.trim()});$('#nt_t').value=$('#nt_b').value=''},'পাঠানো হয়েছে')};
+const saveCfg=()=>tryW(()=>db.doc('settings/pay').set(Object.fromEntries(Object.keys(PM).map(k=>[k,{on:$('#co_'+k).checked,nums:$('#cf_'+k).value.split(/[\n,]+/).map(x=>x.trim()).filter(Boolean)}]))),'সেভ হয়েছে');
+/* ---------- AUTH ---------- */
+const hx=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+async function kdf(pw,salt){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveBits']);return hx(await crypto.subtle.deriveBits({name:'PBKDF2',salt:new TextEncoder().encode(salt),iterations:100000,hash:'SHA-256'},k,256))}
+const ph=p=>p.replace(/\D/g,'').slice(-10),okPh=p=>/^(?:\+?88)?01[3-9]\d{8}$/.test(p.replace(/[\s-]/g,'')),newSalt=()=>hx(crypto.getRandomValues(new Uint8Array(12)));
+let F=0,FT=0;
+const locked=()=>Date.now()<FT?(toast('অনেকবার ভুল হয়েছে, ৩০ সেকেন্ড অপেক্ষা করুন'),true):false;
+const bad=m=>{if(++F>=5){FT=Date.now()+3e4;F=0}toast(m)};
+const unlock=()=>{S.unl=true;try{sessionStorage.setItem('ax_ok','1')}catch(e){}};
+try{S.unl=sessionStorage.getItem('ax_ok')==='1'}catch(e){}
+const signupH=()=>`<div style="margin-top:5vh;text-align:center"><div class="logo">ArenaX</div><h2>নতুন অ্যাকাউন্ট তৈরি করুন</h2></div><div class="card pad"><label>গেমার নাম</label><input id="sn" value="${E((S.prof||{}).name||'')}"><label>Player ID</label><input id="si" value="${E((S.prof||{}).playerId||'')}"><label>ইউজারনেম (a-z, 0-9, _)</label><input id="su" autocapitalize="none" autocomplete="username"><label>মোবাইল নম্বর (পাসওয়ার্ড রিসেটের জন্য)</label><input id="sp" inputmode="tel" placeholder="01XXXXXXXXX"><label>পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><input id="sw" type="password" autocomplete="new-password"><button class="btn" onclick="signUp()">অ্যাকাউন্ট তৈরি করুন</button></div>`;
+const loginH=()=>`<div style="margin-top:10vh;text-align:center"><div class="logo">ArenaX</div><h2>লগইন</h2></div><div class="card pad"><label>ইউজারনেম</label><input id="lu" value="${E(S.acct.username)}" autocapitalize="none"><label>পাসওয়ার্ড</label><input id="lw" type="password" autocomplete="current-password"><button class="btn" onclick="login()">লগইন</button><button class="btn o" onclick="forgotM()">পাসওয়ার্ড ভুলে গেছেন?</button></div>`;
+async function signUp(){
+ const g=i=>$(i).value.trim(),n=g('#sn'),pi=g('#si'),u=g('#su').toLowerCase(),p=g('#sp'),pw=$('#sw').value;
+ if(!n||!pi)return toast('নাম ও Player ID দিন');
+ if(!/^[a-z0-9_]{4,20}$/.test(u))return toast('ইউজারনেম ৪–২০ অক্ষরের হতে হবে (a-z, 0-9, _)');
+ if(!okPh(p))return toast('সঠিক মোবাইল নম্বর দিন');
+ if(pw.length<6)return toast('পাসওয়ার্ড কমপক্ষে ৬ অক্ষর');
+ try{
+  const ex=await db.doc('usernames/'+u).get();
+  if(ex.exists&&ex.data().uid!==uid)return toast('এই ইউজারনেম আগে থেকেই আছে');
+  const salt=newSalt();
+  await db.doc('usernames/'+u).set({uid});
+  await db.doc('accounts/'+uid).set({username:u,salt,hash:await kdf(pw,salt),phoneHash:await kdf(ph(p),salt)});
+  await db.doc('data/users/'+uid+'/profile').set({name:n,playerId:pi,username:u,phone:p});
+  unlock();toast('অ্যাকাউন্ট তৈরি হয়েছে ✅');
+ }catch(e){toast('তৈরি করা যায়নি, আবার চেষ্টা করুন')}
+}
+async function login(){
+ if(locked())return;
+ const u=$('#lu').value.trim().toLowerCase(),pw=$('#lw').value;
+ if(u!==S.acct.username||(await kdf(pw,S.acct.salt))!==S.acct.hash)return bad('ইউজারনেম বা পাসওয়ার্ড ভুল');
+ F=0;unlock();draw();
+}
+function logout(){window.AX_SIGNOUT&&window.AX_SIGNOUT()}
+function forgotM(){modal(`<h3>পাসওয়ার্ড রিসেট</h3><p class="m">অ্যাকাউন্ট খোলার সময় দেওয়া মোবাইল নম্বর দিয়ে যাচাই করুন</p><label>ইউজারনেম</label><input id="fu" autocapitalize="none"><label>নিবন্ধিত মোবাইল নম্বর</label><input id="fp" inputmode="tel"><label>নতুন পাসওয়ার্ড</label><input id="fw" type="password" autocomplete="new-password"><button class="btn" onclick="resetPw()">পাসওয়ার্ড পরিবর্তন করুন</button>`)}
+async function resetPw(){
+ if(locked())return;
+ const u=$('#fu').value.trim().toLowerCase(),p=$('#fp').value.trim(),pw=$('#fw').value;
+ if(pw.length<6)return toast('পাসওয়ার্ড কমপক্ষে ৬ অক্ষর');
+ if(!okPh(p)||u!==S.acct.username||(await kdf(ph(p),S.acct.salt))!==S.acct.phoneHash)return bad('তথ্য মিলছে না');
+ try{const salt=newSalt();await db.doc('accounts/'+uid).set({username:u,salt,hash:await kdf(pw,salt),phoneHash:await kdf(ph(p),salt)});F=0;closeM();unlock();toast('পাসওয়ার্ড পরিবর্তিত হয়েছে ✅')}catch(e){toast('পরিবর্তন করা যায়নি')}
+}
+/* ---------- TOURNAMENT DETAILS TEMPLATE ---------- */
+const dOnly=t=>t.start?new Date(t.start).toLocaleDateString('bn-BD',{dateStyle:'long'}):'—',tOnly=t=>t.start?new Date(t.start).toLocaleTimeString('bn-BD',{timeStyle:'short'}):'—',SE={upcoming:'Upcoming',live:'Ongoing',finished:'Completed'};
+const tpl=t=>`🏆 TOURNAMENT DETAILS\n📅 তারিখ (Date): ${dOnly(t)}\n🏆 টুর্নামেন্টের নাম (Tournament Name): ${t.title}\n⏰ সময় (Time): ${tOnly(t)}\n🎮 মোড (Mode): ${MN[t.mode]}\n💰 এন্ট্রি ফি (Entry Fee): ${t.fee>0?taka(t.fee):'ফ্রি (Free)'}\n🥇 প্রাইজ পুল (Prize Pool): ${taka(t.prize)}\n👥 প্লেয়ার সংখ্যা (Total Players): ${t.max||'∞'}\n📌 স্ট্যাটাস (Status): ${SE[t.status]||''}`;
+const det=t=>`<h2>🏆 TOURNAMENT DETAILS</h2><div class="card pad"><pre>${E(tpl(t).split('\n').slice(1).join('\n'))}</pre><button class="btn s o" style="margin-top:8px" onclick="copyT('${t.id}')">📋 শেয়ার টেক্সট কপি</button></div>`;
+const copyT=id=>{const t=T(id);navigator.clipboard?navigator.clipboard.writeText(tpl(t)).then(()=>toast('কপি হয়েছে')).catch(()=>toast('কপি করা যায়নি')):toast('কপি সাপোর্ট নেই')};
+/* ---------- WALLET ---------- */
+const depOf=u=>(S.dep.find(d=>d.id===u)||{}).items||{},depAp=u=>(S.dapp.find(d=>d.id===u)||{}).items||{};
+const myDeps=()=>Object.entries(depOf(uid)).map(([id,x])=>({id,...x,s:depAp(uid)[id]||'pending'}));
+const bal=u=>{let b=0;const da=depAp(u);Object.entries(depOf(u)).forEach(([id,x])=>{if(da[id]==='approved')b+=+x.amount||0});Object.entries(items(u)).forEach(([t,r])=>{if(r.method==='wallet'&&ap(u,t)!=='rejected')b-=+r.fee||0});return b};
+function addM(){pk='';const m=Object.keys(PM).filter(on);modal(`<h3>💰 Add Money</h3><p class="m">নিচের নম্বরে Send Money করে TrxID দিন। অ্যাডমিন যাচাই করলে ব্যালেন্সে যোগ হবে।</p>${m.length?`<div class="seg">${m.map(k=>`<button class="pm" id="pm_${k}" onclick="pick('${k}')">${PM[k]}</button>`).join('')}</div><div id="pnb" class="room" style="display:none"></div><label>পরিমাণ (৳)</label><input id="da" type="number" inputmode="numeric"><label>আপনার প্রেরক নম্বর</label><input id="ds" inputmode="tel"><label>Transaction ID</label><input id="dx"><button class="btn" onclick="submitDep()">জমা দিন</button>`:'<p>এখন কোনো পেমেন্ট মেথড চালু নেই। সাপোর্টে যোগাযোগ করুন।</p>'}`)}
+async function submitDep(){
+ const a=+$('#da').value,s=$('#ds').value.trim(),x=$('#dx').value.trim();
+ if(!pk||!(a>=10)||!s||!x)return toast('সব তথ্য দিন (সর্বনিম্ন ৳১০)');
+ await tryW(async()=>{await db.doc('deposits/'+uid).set({items:{...depOf(uid),['d'+Date.now()]:{amount:a,method:pk,sender:s,trx:x,name:S.prof.name,ts:Date.now()}}});closeM()},'রিকোয়েস্ট জমা হয়েছে ✅');
+}
+function pickW(){pk='wallet';document.querySelectorAll('.pm').forEach(b=>b.classList.toggle('on',b.id==='pm_wallet'));const b=$('#pnb');if(b)b.style.display='none'}
+async function decDep(u,id,v){const cur=depAp(u);await tryW(async()=>{await db.doc('depApprovals/'+u).set({items:{...cur,[id]:v}});await note({uid:u,title:v==='approved'?'Add Money সফল ✅':'Add Money বাতিল',body:taka((depOf(u)[id]||{}).amount)})},'আপডেট হয়েছে')}
+init();
+</script><script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,sendPasswordResetEmail,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{getFirestore,doc,collection,onSnapshot,getDoc,setDoc,updateDoc,deleteDoc,addDoc}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import{FIREBASE_CONFIG,ADMIN_EMAILS,DEFAULT_PAY}from"./firebase-config.js";
+const app=initializeApp(FIREBASE_CONFIG),auth=getAuth(app),fs=getFirestore(app);
+const ov=document.createElement('div');
+ov.style.cssText='position:fixed;inset:0;z-index:30;background:var(--bg);overflow:auto;display:none';
+ov.innerHTML=`<div style="max-width:420px;margin:auto;padding:14px"><div style="text-align:center;margin-top:8vh"><div class="logo">ArenaX</div><h2>সাইন ইন</h2></div><div class="card pad"><button class="btn" id="ax_g">Google দিয়ে সাইন ইন</button><p class="m" style="text-align:center;margin:10px 0">অথবা ইমেইল দিয়ে</p><input id="ax_em" type="email" placeholder="ইমেইল" autocomplete="email"><input id="ax_pw" type="password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" autocomplete="current-password"><button class="btn" id="ax_si">সাইন ইন</button><button class="btn o" id="ax_su">নতুন অ্যাকাউন্ট তৈরি করুন</button><button class="btn o" id="ax_fp">পাসওয়ার্ড ভুলে গেছেন?</button><p id="ax_er" class="m" style="color:#f87171;margin-top:10px"></p></div></div>`;
+document.body.appendChild(ov);
+const q=id=>ov.querySelector('#'+id),er=m=>q('ax_er').textContent=m;
+const MSG={'auth/invalid-credential':'ইমেইল বা পাসওয়ার্ড ভুল','auth/wrong-password':'ইমেইল বা পাসওয়ার্ড ভুল','auth/user-not-found':'এই ইমেইলে অ্যাকাউন্ট নেই','auth/email-already-in-use':'এই ইমেইলে আগে থেকেই অ্যাকাউন্ট আছে','auth/weak-password':'পাসওয়ার্ড কমপক্ষে ৬ অক্ষর','auth/invalid-email':'সঠিক ইমেইল দিন','auth/popup-closed-by-user':'সাইন ইন বাতিল হয়েছে','auth/too-many-requests':'অনেকবার চেষ্টা হয়েছে, পরে চেষ্টা করুন'};
+const run=async f=>{er('');try{await f()}catch(e){er(MSG[e.code]||('ত্রুটি: '+(e.code||e.message)))}};
+q('ax_g').onclick=()=>run(()=>signInWithPopup(auth,new GoogleAuthProvider()));
+q('ax_si').onclick=()=>run(()=>signInWithEmailAndPassword(auth,q('ax_em').value.trim(),q('ax_pw').value));
+q('ax_su').onclick=()=>run(()=>createUserWithEmailAndPassword(auth,q('ax_em').value.trim(),q('ax_pw').value));
+q('ax_fp').onclick=()=>run(async()=>{const e=q('ax_em').value.trim();if(!e)return er('আগে ইমেইল লিখুন');await sendPasswordResetEmail(auth,e);er('পাসওয়ার্ড রিসেটের লিংক ইমেইলে পাঠানো হয়েছে ✅')});
+window.AX_SIGNOUT=()=>signOut(auth).then(()=>location.reload());
+const wrapS=s=>({id:s.id,exists:s.exists(),data:()=>s.data()});
+const wrapQ=s=>({docs:s.docs.map(d=>({id:d.id,exists:true,data:()=>d.data()}))});
+function build(u,admin){
+ const docRef=p=>{const r=doc(fs,p);return{get:async()=>wrapS(await getDoc(r)),set:d=>setDoc(r,d),update:d=>updateDoc(r,d),delete:()=>deleteDoc(r),onSnapshot:(n,e)=>onSnapshot(r,s=>n(wrapS(s)),e)}};
+ const colRef=p=>{const c=collection(fs,p),own=['regs','deposits'].includes(p)&&!admin;
+  return{doc:id=>docRef(id?p+'/'+id:doc(c).path),add:async d=>docRef((await addDoc(c,d)).path),
+   onSnapshot:(n,e)=>own?onSnapshot(doc(fs,p+'/'+u.uid),s=>n({docs:s.exists()?[{id:s.id,exists:true,data:()=>s.data()}]:[]}),e):onSnapshot(c,s=>n(wrapQ(s)),e)}};
+ const dbo={doc:docRef,collection:colRef},user={id:async()=>u.uid,canEdit:()=>admin,isOwner:()=>admin};
+ return n=>n==='db'?dbo:n==='user'?user:null;
+}
+let started=false;
+onAuthStateChanged(auth,async u=>{
+ if(!u){ov.style.display='block';return}
+ ov.style.display='none';
+ window.AX_EMAIL=u.email||'';
+ const admin=!!u.emailVerified&&ADMIN_EMAILS.map(x=>x.toLowerCase()).includes((u.email||'').toLowerCase());
+ if(admin){try{const s=await getDoc(doc(fs,'settings/pay'));if(!s.exists())await setDoc(doc(fs,'settings/pay'),DEFAULT_PAY)}catch(e){}}
+ if(started)return;started=true;window.__fbRes(build(u,admin));
+});
+</script>
+</body></html>
